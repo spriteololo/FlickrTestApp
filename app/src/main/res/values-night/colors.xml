@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <color name="colorPrimary">#0D0D0D</color>
+
+    <color name="screenBackground">#232323</color>
+    <color name="default_screen_bg">#161616</color>
+    <color name="titleColor">#C2C2C2</color>
+    <color name="baseActionIconColor">@color/titleColor</color>
+    <color name="textColor">@color/passiveInputLightColor</color>
+
+
+
+    <color name="search_icon_tint">@color/textColor</color>
+    <color name="search_bg">@color/blackBackground</color>
+
+    <color name="edit_text_hint">@color/textColor</color>
+    <color name="edit_text_color">@color/titleColor</color>
+    <color name="bg_card_color">#323232</color>
+</resources>

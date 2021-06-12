@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FlickrTestApp</string>
+    <string name="search_bar_explanation">Search</string>
 </resources>

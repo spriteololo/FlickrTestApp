@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-android-extensions'
 }
 
 android {
@@ -9,13 +11,27 @@ android {
 
     defaultConfig {
         applicationId "com.example.flickrtestapp"
-        minSdkVersion 23
+        minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
     }
+    androidExtensions {
+        experimental = true
+    }
+    dataBinding {
+        enabled = true
+    }
 
     buildTypes {
+        debug {
+            minifyEnabled true
+            debuggable true
+
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
+            proguardFiles './proguard/proguard-rules.pro'
+            proguardFiles file('./proguard/libs').listFiles()
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -37,4 +53,39 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.3.0'
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+
+
+    final def navigation_version = "2.3.5"
+    implementation "androidx.navigation:navigation-fragment-ktx:${navigation_version}"
+    implementation "androidx.navigation:navigation-ui-ktx:${navigation_version}"
+
+    final def koin_version = "2.1.6"
+    implementation "org.koin:koin-core:$koin_version"
+    implementation "org.koin:koin-android:$koin_version"
+
+
+    final def retrofit = "2.9.0"
+    implementation "com.squareup.retrofit2:retrofit:${retrofit}"
+    implementation "com.squareup.retrofit2:converter-gson:${retrofit}"
+    implementation "com.squareup.retrofit2:adapter-rxjava3:${retrofit}"
+
+    final def okhttp = "4.9.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:${okhttp}"
+    implementation "com.squareup.okhttp3:okhttp:${okhttp}"
+
+    final def stetho_version = '1.6.0'
+    implementation "com.facebook.stetho:stetho:$stetho_version"
+    implementation "com.facebook.stetho:stetho-okhttp3:$stetho_version"
+
+    implementation "io.reactivex.rxjava3:rxjava:3.0.12"
+    implementation "io.reactivex.rxjava3:rxandroid:3.0.0"
+
+    implementation "com.github.bumptech.glide:glide:4.12.0"
+
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
+    def moxy_version = '1.7.0'
+    kapt "tech.schoolhelper:moxy-x-compiler:$moxy_version"
+    implementation "tech.schoolhelper:moxy-x:$moxy_version"
+    implementation "tech.schoolhelper:moxy-x-androidx:$moxy_version"
 }

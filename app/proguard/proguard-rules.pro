@@ -19,3 +19,15 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-optimizationpasses 5
+
+-keep class com.example.flickrtestapp.data.** { <fields>; }
+-keep class com.example.flickrtestapp.Constants { <fields>; }
+-keepclassmembers class * extends java.lang.Enum {
+    <fields>;
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+-keep class * extends androidx.fragment.app.Fragment{}

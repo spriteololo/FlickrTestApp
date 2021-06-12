@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data class="com.example.flickrtestapp.ui.main.MainFragmentBinding">
+
+        <import type="android.view.View" />
+
+        <variable
+            name="mainScreenVo"
+            type="com.example.flickrtestapp.data.vo.MainScreenVo" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:background="@android:color/transparent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/ll_search"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/search_view_height"
+                android:layout_marginVertical="10dp"
+                android:layout_marginHorizontal="@dimen/one_point_five_size"
+                android:background="@drawable/background_search_top_toolbar"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_scrollFlags="enterAlways|scroll|exitUntilCollapsed">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    app:srcCompat="@drawable/search"
+                    tools:ignore="ContentDescription" />
+
+                <EditText
+                    android:id="@+id/et_search"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/default_size"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:hint="@string/search_bar_explanation"
+                    android:text="@{mainScreenVo.query}"
+                    android:imeOptions="actionSearch"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:textSize="14sp"
+                    style="@style/SearchTopToolbarTheme" />
+
+                <ImageView
+                    android:id="@+id/close_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{mainScreenVo.query.empty ? View.GONE : View.VISIBLE}"
+                    android:layout_marginHorizontal="@dimen/one_point_five_size"
+                    app:srcCompat="@drawable/ic_close"
+                    tools:ignore="ContentDescription" />
+
+            </LinearLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/srl_photos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <com.example.flickrtestapp.ui.view.recyclerview.EndlessRecyclerView
+                android:id="@+id/rv_photos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/item_photo_card" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <ProgressBar
+            android:id="@+id/pb_photos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:indeterminateOnly="true"
+            android:indeterminateTint="@color/baseActionIconColor"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

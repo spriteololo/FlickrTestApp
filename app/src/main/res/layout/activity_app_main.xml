@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:elevation="10dp"
+        android:visibility="gone"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:background="@color/default_screen_bg"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            android:layout_height="?attr/actionBarSize">
+
+            <ImageView
+                android:id="@+id/iv_toolbar_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/default_size"
+                android:paddingEnd="@dimen/padding_back_toolbar_end"
+                app:srcCompat="@drawable/ic_back_button" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="@string/app_name"
+                android:textColor="@color/titleColor"
+                android:gravity="center_vertical"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textSize="19sp"
+                android:layout_height="wrap_content" />
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_main_graph" />
+
+</LinearLayout>
