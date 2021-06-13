@@ -3,14 +3,21 @@ package com.example.flickrtestapp.ui.splash
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.flickrtestapp.R
 import com.example.flickrtestapp.extensions.navigateSafe
-import com.example.flickrtestapp.ui.FlowFragment
+import com.example.flickrtestapp.ui.common.BaseInstanceSaverFragment
 
-class SplashFragment: FlowFragment()  {
-    override val layoutRes = R.layout.fragment_splash
+class SplashFragment: BaseInstanceSaverFragment()  {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_splash, container, false)
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Handler(Looper.getMainLooper()).postDelayed({

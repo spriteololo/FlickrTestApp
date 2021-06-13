@@ -1,18 +1,12 @@
-package com.example.flickrtestapp.ui.main
+package com.example.flickrtestapp.ui.details
 
 import com.arellomobile.mvp.MvpView
 import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
-import com.example.flickrtestapp.data.vo.PhotoVo
 
-interface MainView : MvpView {
+interface DetailsView: MvpView {
     @StateStrategyType(OneExecutionStateStrategy::class)
-    fun updateRecent(
-        items: List<PhotoVo>,
-        clearItems: Boolean,
-        hasNextPage: Boolean,
-        resultCount: Int
-    )
+    fun updateImageUrl(imageUrl: String)
 
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun showError(exception: Throwable)

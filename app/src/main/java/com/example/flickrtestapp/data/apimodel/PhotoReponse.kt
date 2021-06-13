@@ -4,14 +4,13 @@ import com.google.gson.annotations.SerializedName
 
 data class PhotoResponse(
     @SerializedName("photos")
-    val photoSearchWrapper: PhotoSearchWrapper,
-    val stat: String
+    val photoSearchWrapper: PhotoSearchWrapper
 )
 
 data class PhotoSearchWrapper(
     val page: Int,
     val pages: Int,
-    val perPage: Int,
+    @SerializedName("perpage") val perPage: Int,
     val total: Int,
     @SerializedName("photo")
     val photos: List<ServerPhoto>

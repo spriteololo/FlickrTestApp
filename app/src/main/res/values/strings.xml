@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">FlickrTestApp</string>
     <string name="search_bar_explanation">Search</string>
+    <string name="results_for_with_count">Results for \"%s\", %s found</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="something_went_wrong">Something went wrong :(</string>
+
+    <plurals name="result_plurals">
+        <item quantity="one">%d result</item>
+        <item quantity="other">%d results</item>
+    </plurals>
 </resources>

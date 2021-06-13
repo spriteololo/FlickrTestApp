@@ -5,6 +5,7 @@ import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.Keep
 import androidx.databinding.DataBindingUtil
@@ -13,23 +14,26 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.example.flickrtestapp.Constants
 import com.example.flickrtestapp.R
+import com.example.flickrtestapp.data.exceptions.FlickrApiException
+import com.example.flickrtestapp.data.exceptions.NoInternetException
 import com.example.flickrtestapp.data.vo.MainScreenVo
 import com.example.flickrtestapp.data.vo.PhotoVo
 import com.example.flickrtestapp.ui.AppActivity
+import com.example.flickrtestapp.ui.common.BaseInstanceSaverFragment
 import com.example.flickrtestapp.ui.common.ItemClickListener
 import com.example.flickrtestapp.ui.details.DetailsFragment
 import com.example.flickrtestapp.ui.view.recyclerview.EndlessRecyclerView
 import com.example.flickrtestapp.util.ActivityUtils
 import com.example.flickrtestapp.util.extensions.addOnTextChangedListener
+import kotlinx.android.synthetic.main.fragment_main.*
 import org.koin.android.ext.android.get
-import java.util.ArrayList
+import java.util.*
 
-class MainFragment : MvpAppCompatFragment(), MainView, ItemClickListener<PhotoVo>,
+class MainFragment : BaseInstanceSaverFragment(), MainView, ItemClickListener<PhotoVo>,
     EndlessRecyclerView.EndlessScrollListener, SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var photoAdapter: PhotoAdapter
@@ -87,6 +91,7 @@ class MainFragment : MvpAppCompatFragment(), MainView, ItemClickListener<PhotoVo
         (activity as? AppActivity)?.showAppBarAndBackBtn(appBarVisibility = true, visible = false)
         if (savedInstanceState != null) {
             nextPage = savedInstanceState.getInt(SAVE_STATE_CURRENT_PAGE)
+            isSearchActive = savedInstanceState.getBoolean(SAVE_STATE_SEARCH_ACTIVE, false)
             savedInstanceState.getParcelableArrayList<PhotoVo>(SAVE_STATE_LIST)?.let { list ->
                 listAll.addAll(list)
             }
@@ -119,6 +124,11 @@ class MainFragment : MvpAppCompatFragment(), MainView, ItemClickListener<PhotoVo
         binding.srlPhotos.setOnRefreshListener(this)
     }
 
+    override fun onNetworkStateChanged(networkAvailable: Boolean) {
+        rv_photos.internetConnected = networkAvailable
+        if(networkAvailable && listAll.isEmpty()) onRefresh()
+    }
+
     private fun clearSearch() {
         binding.etSearch.setText(Constants.EMPTY_STRING)
         ActivityUtils.closeKeyboard(activity)
@@ -149,11 +159,17 @@ class MainFragment : MvpAppCompatFragment(), MainView, ItemClickListener<PhotoVo
         rvPhotos.endlessScrollListener = this
     }
 
-    override fun updateRecent(items: List<PhotoVo>, clearItems: Boolean, hasNextPage: Boolean) {
+    override fun updateRecent(
+        items: List<PhotoVo>,
+        clearItems: Boolean,
+        hasNextPage: Boolean,
+        resultCount: Int
+    ) {
+        binding.mainScreenVo!!.resultCount = if (isSearchActive) resultCount else null
         binding.srlPhotos.isRefreshing = false
         showProgress(false)
         if (clearItems) {
-            binding.rvPhotos.scrollToPosition(0)
+            binding.rvPhotos.apply { post { scrollToPosition(0) } }
         }
         photoAdapter.setItems(items, clearItems)
         if (hasNextPage) {
@@ -161,6 +177,18 @@ class MainFragment : MvpAppCompatFragment(), MainView, ItemClickListener<PhotoVo
         } else {
             nextPage = REJECT_PAGE
         }
+    }
+
+    override fun showError(exception: Throwable) {
+        when (exception) {
+            is FlickrApiException -> Toast.makeText(context, exception.message, Toast.LENGTH_SHORT)
+                .show()
+            is NoInternetException -> {}
+            else -> Toast.makeText(context, R.string.something_went_wrong, Toast.LENGTH_SHORT)
+                .show()
+        }
+        rv_photos.isLoading = false
+        showProgress(false)
     }
 
     override fun onItemClick(view: View, item: PhotoVo) {
@@ -180,6 +208,7 @@ class MainFragment : MvpAppCompatFragment(), MainView, ItemClickListener<PhotoVo
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putInt(SAVE_STATE_CURRENT_PAGE, nextPage)
+        outState.putBoolean(SAVE_STATE_SEARCH_ACTIVE, isSearchActive)
         if (listAll.isNotEmpty()) {
             (listAll as? ArrayList<out Parcelable>)?.let { list ->
                 outState.putParcelableArrayList(SAVE_STATE_LIST, list)
@@ -212,6 +241,7 @@ class MainFragment : MvpAppCompatFragment(), MainView, ItemClickListener<PhotoVo
     companion object {
         private const val SAVE_STATE_LIST = "SAVE_STATE_LIST"
         private const val SAVE_STATE_CURRENT_PAGE = "SAVE_STATE_CURRENT_PAGE"
+        private const val SAVE_STATE_SEARCH_ACTIVE = "SAVE_STATE_SEARCH_ACTIVE"
         private const val SAVE_STATE_CURRENT_VO = "SAVE_STATE_CURRENT_VO"
         const val REJECT_PAGE = 0
     }

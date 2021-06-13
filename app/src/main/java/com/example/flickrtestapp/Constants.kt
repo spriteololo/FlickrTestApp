@@ -7,6 +7,7 @@ object Constants {
     object ApiMethods {
         const val SEARCH = "flickr.photos.search"
         const val RECENT = "flickr.photos.getRecent"
+        const val SIZES = "flickr.photos.getSizes"
     }
 
     object RequestQueries {
@@ -19,8 +20,10 @@ object Constants {
         const val SAFE_SEARCH = "safe_search"
         const val PAGE = "page"
         const val PER_PAGE = "per_page"
+        const val PHOTO_ID = "photo_id"
     }
 
+    const val REQUEST_SUCCESS = "ok"
     const val DEFAULT_PER_PAGE = 20
     const val EMPTY_STRING = ""
     const val STRING_SLASH = "/"
@@ -40,10 +43,11 @@ object Constants {
     val DEFAULT_QUERY_MAP = mapOf(
         RequestQueries.API_KEY to API_KEY,
         RequestQueries.FORMAT to DEFAULT_FORMAT,
-        RequestQueries.NO_JSON_CALLBACK to NO_JSON_CALLBACK,
-        RequestQueries.EXTRAS to REQUEST_EXTRAS,
-        RequestQueries.SAFE_SEARCH to SAFE_SEARCH_DEFAULT
+        RequestQueries.NO_JSON_CALLBACK to NO_JSON_CALLBACK
     )
+
+    val QUERY_MAP_WITH_EXTRAS = DEFAULT_QUERY_MAP + (RequestQueries.EXTRAS to REQUEST_EXTRAS) +
+            (RequestQueries.SAFE_SEARCH to SAFE_SEARCH_DEFAULT)
 
     const val HTTP_DISK_CACHE_SIZE: Long = 20 * 1024 // 20 Mb in Kb;
     const val HTTP_CLIENT_CONNECTION_TIMEOUT = 30_000L

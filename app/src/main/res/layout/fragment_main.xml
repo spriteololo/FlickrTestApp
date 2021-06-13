@@ -16,72 +16,93 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:background="@android:color/transparent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:id="@+id/ll_search"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/search_view_height"
-                android:layout_marginVertical="10dp"
-                android:layout_marginHorizontal="@dimen/one_point_five_size"
-                android:background="@drawable/background_search_top_toolbar"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                app:layout_scrollFlags="enterAlways|scroll|exitUntilCollapsed">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="15dp"
-                    app:srcCompat="@drawable/search"
-                    tools:ignore="ContentDescription" />
-
-                <EditText
-                    android:id="@+id/et_search"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="@dimen/default_size"
-                    android:background="@null"
-                    android:gravity="center_vertical"
-                    android:hint="@string/search_bar_explanation"
-                    android:text="@{mainScreenVo.query}"
-                    android:imeOptions="actionSearch"
-                    android:importantForAutofill="no"
-                    android:inputType="text"
-                    android:textSize="14sp"
-                    style="@style/SearchTopToolbarTheme" />
-
-                <ImageView
-                    android:id="@+id/close_search"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="@{mainScreenVo.query.empty ? View.GONE : View.VISIBLE}"
-                    android:layout_marginHorizontal="@dimen/one_point_five_size"
-                    app:srcCompat="@drawable/ic_close"
-                    tools:ignore="ContentDescription" />
-
-            </LinearLayout>
-        </com.google.android.material.appbar.AppBarLayout>
-
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/srl_photos"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:layout_height="match_parent"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
             <com.example.flickrtestapp.ui.view.recyclerview.EndlessRecyclerView
                 android:id="@+id/rv_photos"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                tools:spanCount="2"
+                tools:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
                 tools:listitem="@layout/item_photo_card" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:background="@android:color/transparent"
+            app:elevation="0dp"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginVertical="10dp"
+                android:layout_marginHorizontal="@dimen/one_point_five_size"
+                android:background="@drawable/background_search_top_toolbar"
+                app:layout_scrollFlags="enterAlways|scroll|snap|snapMargins">
+
+                <LinearLayout
+                    android:id="@+id/ll_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/search_view_height"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        app:srcCompat="@drawable/search"
+                        tools:ignore="ContentDescription" />
+
+                    <EditText
+                        android:id="@+id/et_search"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/default_size"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:hint="@string/search_bar_explanation"
+                        android:text="@{mainScreenVo.query}"
+                        android:imeOptions="actionSearch"
+                        android:importantForAutofill="no"
+                        android:inputType="text"
+                        android:textSize="14sp"
+                        style="@style/SearchTopToolbarTheme" />
+
+                    <ImageView
+                        android:id="@+id/close_search"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="@{mainScreenVo.query.empty ? View.GONE : View.VISIBLE}"
+                        android:layout_marginHorizontal="@dimen/one_point_five_size"
+                        app:srcCompat="@drawable/ic_close"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/textColor"
+                    android:layout_marginHorizontal="@dimen/one_point_five_size"
+                    android:layout_marginBottom="10dp"
+                    android:visibility="@{!mainScreenVo.query.empty &amp;&amp; mainScreenVo.resultCount != null ? View.VISIBLE: View.GONE }"
+                    android:text="@{mainScreenVo.getResult(mainScreenVo.query, mainScreenVo.resultCount, context)}" />
+            </LinearLayout>
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
 
         <ProgressBar
             android:id="@+id/pb_photos"

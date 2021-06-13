@@ -17,6 +17,16 @@ class EndlessRecyclerView(context: Context, attrSet: AttributeSet?, defStyle: In
     val progressLayoutId: Int
     private val loadingAdapterDataObserver = LoadingAdapterDataObserver()
     private var mVisibleThreshold = DEFAULT_VISIBLE_THRESHOLD
+    var internetConnected = true
+        set(value) {
+            if (field != value) {
+                field = value
+                if (field) {
+                    lastRunnable?.invoke()
+                }
+            }
+        }
+    var lastRunnable: (() -> Unit)? = null
     var isEndlessScrollEnable = true
         set(value) {
             if (field != value) {
@@ -160,10 +170,21 @@ class EndlessRecyclerView(context: Context, attrSet: AttributeSet?, defStyle: In
             && totalItemCount - visibleItemCount <= firstVisibleItem + mVisibleThreshold
         ) {
             if (onLoadMoreRunnable != null) {
-                HANDLER.removeCallbacks(onLoadMoreRunnable!!)
+                if (internetConnected) {
+                    HANDLER.removeCallbacks(onLoadMoreRunnable!!)
+                } else {
+                    lastRunnable = null
+                }
             }
             onLoadMoreRunnable = OnLoadMoreRunnable()
-            HANDLER.post(onLoadMoreRunnable as OnLoadMoreRunnable)
+            if (internetConnected) {
+                HANDLER.post(onLoadMoreRunnable as OnLoadMoreRunnable)
+            } else {
+                lastRunnable = {
+                    HANDLER.post(onLoadMoreRunnable as OnLoadMoreRunnable)
+                    lastRunnable = null
+                }
+            }
             isLoading = true
         }
     }

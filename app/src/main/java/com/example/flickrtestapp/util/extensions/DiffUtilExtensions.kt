@@ -10,11 +10,5 @@ fun DiffUtil.Callback.calculateDiffAndSendToAdapter(
     adapter: RecyclerView.Adapter<*>,
     detectMoves: Boolean = true
 ) {
-    /*Single.fromCallable { DiffUtil.calculateDiff(this, detectMoves) }
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe { result ->
-            result.dispatchUpdatesTo(adapter)
-        }*/
     DiffUtil.calculateDiff(this, detectMoves).dispatchUpdatesTo(adapter)
 }
