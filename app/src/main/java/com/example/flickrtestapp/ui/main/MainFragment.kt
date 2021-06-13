@@ -5,6 +5,7 @@ import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.Keep
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.FragmentNavigatorExtras
@@ -54,6 +55,21 @@ class MainFragment : MvpAppCompatFragment(), MainView, ItemClickListener<PhotoVo
     @ProvidePresenter
     fun providePresenter(): MainPresenter = get()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        activity?.onBackPressedDispatcher?.addCallback(this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (::binding.isInitialized && binding.mainScreenVo?.query?.isNotBlank() == true) {
+                        clearSearch()
+                    } else {
+                        isEnabled = false
+                        activity?.onBackPressed()
+                    }
+                }
+            })
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -98,11 +114,15 @@ class MainFragment : MvpAppCompatFragment(), MainView, ItemClickListener<PhotoVo
             }
         }
         binding.closeSearch.setOnClickListener {
-            binding.etSearch.setText(Constants.EMPTY_STRING)
-            ActivityUtils.closeKeyboard(activity)
-            binding.etSearch.clearFocus()
+            clearSearch()
         }
         binding.srlPhotos.setOnRefreshListener(this)
+    }
+
+    private fun clearSearch() {
+        binding.etSearch.setText(Constants.EMPTY_STRING)
+        ActivityUtils.closeKeyboard(activity)
+        binding.etSearch.clearFocus()
     }
 
     private fun sendRequest() {

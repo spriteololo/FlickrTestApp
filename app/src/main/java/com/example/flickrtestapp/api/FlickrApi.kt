@@ -6,29 +6,24 @@ import com.example.flickrtestapp.data.apimodel.PhotoResponse
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface FlickrApi {
 
-    @GET("services/rest/")
+    @GET(Constants.API_ENDPOINT)
     fun getRecentPhotos(
         @Query(RequestQueries.METHOD) method: String = Constants.ApiMethods.RECENT,
-        @Query(RequestQueries.API_KEY) apiKey: String = Constants.API_KEY,
-        @Query(RequestQueries.FORMAT) format: String = Constants.DEFAULT_FORMAT,
-        @Query(RequestQueries.NO_JSON_CALLBACK) noJsonCallback: Boolean = Constants.NO_JSON_CALLBACK,
-        @Query(RequestQueries.PER_PAGE) perPage: Int = Constants.DEFAULT_PER_PAGE,
+        @QueryMap map: Map<String, String> = Constants.DEFAULT_QUERY_MAP,
         @Query(RequestQueries.PAGE) page: Int,
-        @Query(RequestQueries.EXTRAS) extras: String = Constants.REQUEST_EXTRAS
+        @Query(RequestQueries.PER_PAGE) perPage: Int = Constants.DEFAULT_PER_PAGE
     ): Single<PhotoResponse>
 
-    @GET("services/rest/")
+    @GET(Constants.API_ENDPOINT)
     fun searchPhotos(
         @Query(RequestQueries.METHOD) method: String = Constants.ApiMethods.SEARCH,
-        @Query(RequestQueries.API_KEY) apiKey: String = Constants.API_KEY,
-        @Query(RequestQueries.FORMAT) format: String = Constants.DEFAULT_FORMAT,
-        @Query(RequestQueries.NO_JSON_CALLBACK) noJsonCallback: Boolean = Constants.NO_JSON_CALLBACK,
+        @QueryMap map: Map<String, String> = Constants.DEFAULT_QUERY_MAP,
         @Query(RequestQueries.QUERY_TEXT) query: String,
         @Query(RequestQueries.PAGE) page: Int,
-        @Query(RequestQueries.PER_PAGE) perPage: Int = Constants.DEFAULT_PER_PAGE,
-        @Query(RequestQueries.EXTRAS) extras: String = Constants.REQUEST_EXTRAS
+        @Query(RequestQueries.PER_PAGE) perPage: Int = Constants.DEFAULT_PER_PAGE
     ): Single<PhotoResponse>
 }

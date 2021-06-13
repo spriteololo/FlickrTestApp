@@ -14,7 +14,7 @@ class PhotoResponseToPhotoVoConverter : SimpleConverter<ServerPhoto, PhotoVo>(
             when {
                 value.heightC != null -> "c"
                 value.heightW != null -> "w"
-                else -> "t"//TODO check
+                else -> "t"
             }
 
         return PhotoVo(
