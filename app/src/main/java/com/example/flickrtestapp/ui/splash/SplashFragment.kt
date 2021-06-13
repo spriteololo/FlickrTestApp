@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.flickrtestapp.R
-import com.example.flickrtestapp.extensions.navigateSafe
+import com.example.flickrtestapp.util.extensions.navigateSafe
 import com.example.flickrtestapp.ui.common.BaseInstanceSaverFragment
 
 class SplashFragment: BaseInstanceSaverFragment()  {

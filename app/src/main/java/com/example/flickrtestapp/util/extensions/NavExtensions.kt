@@ -1,4 +1,4 @@
-package com.example.flickrtestapp.extensions
+package com.example.flickrtestapp.util.extensions
 
 import android.os.Bundle
 import androidx.annotation.IdRes

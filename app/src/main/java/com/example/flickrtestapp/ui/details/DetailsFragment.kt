@@ -45,7 +45,7 @@ class DetailsFragment : BaseInstanceSaverFragment(), DetailsView {
         sharedElementEnterTransition = TransitionInflater.from(requireContext())
             .inflateTransition(R.transition.shared_image)
         sharedElementReturnTransition = TransitionInflater.from(requireContext())
-            .inflateTransition(R.transition.shared_image)
+            .inflateTransition(R.transition.shared_image_back)
         postponeEnterTransition()
     }
 

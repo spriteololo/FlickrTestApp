@@ -29,6 +29,7 @@ import com.example.flickrtestapp.ui.details.DetailsFragment
 import com.example.flickrtestapp.ui.view.recyclerview.EndlessRecyclerView
 import com.example.flickrtestapp.util.ActivityUtils
 import com.example.flickrtestapp.util.extensions.addOnTextChangedListener
+import com.example.flickrtestapp.util.extensions.navigateSafe
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.koin.android.ext.android.get
 import java.util.*
@@ -187,6 +188,7 @@ class MainFragment : BaseInstanceSaverFragment(), MainView, ItemClickListener<Ph
             else -> Toast.makeText(context, R.string.something_went_wrong, Toast.LENGTH_SHORT)
                 .show()
         }
+        binding.srlPhotos.isRefreshing = false
         rv_photos.isLoading = false
         showProgress(false)
     }
@@ -198,7 +200,7 @@ class MainFragment : BaseInstanceSaverFragment(), MainView, ItemClickListener<Ph
             imageView to imageView.transitionName,
             textView to textView.transitionName
         )
-        findNavController().navigate(
+        findNavController().navigateSafe(
             R.id.action_MainFragment_to_DetailsFragment,
             DetailsFragment.createBundle(item),
             null,
