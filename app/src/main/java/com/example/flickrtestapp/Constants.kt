@@ -37,7 +37,6 @@ object Constants {
     const val BASE_CDN_URL = "https://live.staticflickr.com"
     const val API_ENDPOINT = "services/rest/"
     private const val API_KEY = "ba55f8262a0e541b0defd6f6bb132967"
-    const val API_SECRET = "3891f12f426cbab7" //TODO move out of here
 
 
     val DEFAULT_QUERY_MAP = mapOf(
@@ -50,7 +49,7 @@ object Constants {
             (RequestQueries.SAFE_SEARCH to SAFE_SEARCH_DEFAULT)
 
     const val HTTP_DISK_CACHE_SIZE: Long = 20 * 1024 // 20 Mb in Kb;
-    const val HTTP_CLIENT_CONNECTION_TIMEOUT = 30_000L
-    const val HTTP_CLIENT_READ_TIMEOUT = 60_000L
-    const val HTTP_CLIENT_WRITE_TIMEOUT = 60_000L
+    const val HTTP_CLIENT_CONNECTION_TIMEOUT = 15_000L
+    const val HTTP_CLIENT_READ_TIMEOUT = 30_000L
+    const val HTTP_CLIENT_WRITE_TIMEOUT = 30_000L
 }

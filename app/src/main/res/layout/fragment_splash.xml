@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3DC674"><!--TODO-->
+    android:background="#34A639">
 
     <ImageView
         android:src="@drawable/ic_launcher_foreground"

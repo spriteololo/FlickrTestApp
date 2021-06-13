@@ -93,9 +93,6 @@ class EndlessRecyclerView(context: Context, attrSet: AttributeSet?, defStyle: In
     }
 
     private fun detachEndlessScrollListener() {
-//        if (adapter != null) {
-//            adapter!!.setProgressEnable(false)
-//        }
         if (onLoadMoreRunnable != null) {
             HANDLER.removeCallbacks(onLoadMoreRunnable!!)
             onLoadMoreRunnable = null
@@ -116,9 +113,6 @@ class EndlessRecyclerView(context: Context, attrSet: AttributeSet?, defStyle: In
                 endlessRecyclerOnScrollListener = EndlessRecyclerOnScrollListener()
             }
             addOnScrollListener(endlessRecyclerOnScrollListener!!)
-//            if (adapter != null) {
-//                adapter!!.setProgressEnable(true)
-//            }
         }
         loadMore()
     }

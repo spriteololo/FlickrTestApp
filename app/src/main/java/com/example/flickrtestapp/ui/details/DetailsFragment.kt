@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.Keep
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
@@ -18,6 +19,8 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.flickrtestapp.R
+import com.example.flickrtestapp.data.exceptions.FlickrApiException
+import com.example.flickrtestapp.data.exceptions.NoInternetException
 import com.example.flickrtestapp.data.vo.PhotoVo
 import com.example.flickrtestapp.ui.AppActivity
 import com.example.flickrtestapp.ui.common.BaseInstanceSaverFragment
@@ -132,5 +135,12 @@ class DetailsFragment : BaseInstanceSaverFragment(), DetailsView {
     }
 
     override fun showError(exception: Throwable) {
+        when (exception) {
+            is FlickrApiException -> Toast.makeText(context, exception.message, Toast.LENGTH_SHORT)
+                .show()
+            is NoInternetException -> {}
+            else -> Toast.makeText(context, R.string.something_went_wrong, Toast.LENGTH_SHORT)
+                .show()
+        }
     }
 }
