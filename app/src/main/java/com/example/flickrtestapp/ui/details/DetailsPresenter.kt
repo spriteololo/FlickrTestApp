@@ -36,7 +36,10 @@ class DetailsPresenter(
                     throw FlickrApiException(errorResponse)
                 }
             }
-            .map { sizeResponse -> sizeResponse.sizes.sizeList.maxByOrNull { it.width }!!.source }
+            .map { sizeResponse ->
+                sizeResponse.sizes.sizeList.maxByOrNull { it.width }?.source
+                    ?: Constants.EMPTY_STRING
+            }
             .observeOn(uiScheduler)
             .subscribe({ source ->
                 viewState.updateImageUrl(source)

@@ -2,19 +2,16 @@ package com.example.flickrtestapp.util.databinding
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.animation.AlphaAnimation
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.GenericTransitionOptions
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
-import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
@@ -24,9 +21,6 @@ import com.bumptech.glide.request.target.ImageViewTarget
 import com.bumptech.glide.request.target.Target
 import com.example.flickrtestapp.BuildConfig
 
-/**
- * Created by romanborisenko on 21.07.17.
- */
 object ImageBindingAdapters {
     private const val IMAGE_CHANGE_DURATION = 300
 
@@ -104,30 +98,6 @@ object ImageBindingAdapters {
             builder.apply(RequestOptions.circleCropTransform())
         }
         builder.into(imageView)
-    }
-
-    @JvmStatic
-    @BindingAdapter(value = ["srcCompat"])
-    fun setSrcCompat(imageView: ImageView, drawable: Drawable?) {
-        imageView.setImageDrawable(drawable)
-    }
-
-    @JvmStatic
-    @BindingAdapter("imageViewTint")
-    fun setImageViewTint(imageView: ImageView, color: Int) {
-        imageView.setColorFilter(color, PorterDuff.Mode.SRC_IN)
-    }
-
-    @JvmStatic
-    @BindingAdapter(value = ["drawableEndCompat"])
-    fun setDrawableEndCompat(
-        textView: TextView,
-        drawable: Drawable?
-    ) {
-        if (drawable == null) {
-            return
-        }
-        textView.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
     }
 
     @JvmStatic

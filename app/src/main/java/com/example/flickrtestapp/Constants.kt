@@ -23,6 +23,12 @@ object Constants {
         const val PHOTO_ID = "photo_id"
     }
 
+    object ImageSizeSuffix {
+        const val SUFFIX_C = "c"
+        const val SUFFIX_W = "w"
+        const val SUFFIX_T = "t"
+    }
+
     const val REQUEST_SUCCESS = "ok"
     const val DEFAULT_PER_PAGE = 20
     const val EMPTY_STRING = ""

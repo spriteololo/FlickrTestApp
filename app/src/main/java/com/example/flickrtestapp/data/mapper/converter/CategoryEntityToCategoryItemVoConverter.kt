@@ -1,5 +1,6 @@
 package com.example.flickrtestapp.data.mapper.converter
 
+import com.example.flickrtestapp.Constants.ImageSizeSuffix
 import com.example.flickrtestapp.data.apimodel.ServerPhoto
 import com.example.flickrtestapp.data.mapper.SimpleConverter
 import com.example.flickrtestapp.data.vo.PhotoVo
@@ -12,9 +13,9 @@ class PhotoResponseToPhotoVoConverter : SimpleConverter<ServerPhoto, PhotoVo>(
     override fun convert(value: ServerPhoto): PhotoVo {
         val biggestPreviewSize =
             when {
-                value.heightC != null -> "c"
-                value.heightW != null -> "w"
-                else -> "t"
+                value.heightC != null -> ImageSizeSuffix.SUFFIX_C
+                value.heightW != null -> ImageSizeSuffix.SUFFIX_W
+                else -> ImageSizeSuffix.SUFFIX_T
             }
 
         return PhotoVo(

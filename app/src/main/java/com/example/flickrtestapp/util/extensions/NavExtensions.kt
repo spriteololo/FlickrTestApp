@@ -12,13 +12,9 @@ fun NavController.navigateSafe(
     navOptions: NavOptions? = null,
     navExtras: Navigator.Extras? = null
 ) {
-    /*val action = currentDestination?.getAction(resId) ?: graph.getAction(resId)
-    if (action != null && currentDestination?.id != action.destinationId) {
+    try {
         navigate(resId, args, navOptions, navExtras)
-    }*/
-    try{
-        navigate(resId, args, navOptions, navExtras)
-    } catch (e: IllegalArgumentException){
+    } catch (e: IllegalArgumentException) {
         e.printStackTrace()
     }
 }

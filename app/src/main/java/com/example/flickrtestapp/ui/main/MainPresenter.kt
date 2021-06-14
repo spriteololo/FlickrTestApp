@@ -14,6 +14,7 @@ import com.example.flickrtestapp.util.RxUtils
 import com.google.gson.Gson
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.disposables.Disposable
+import okhttp3.ResponseBody
 
 @InjectViewState
 class MainPresenter(
@@ -29,17 +30,7 @@ class MainPresenter(
         if (photoRequestDisposable.isDisposed) {
             photoRequestDisposable = flickrApi.getRecentPhotos(page = page)
                 .subscribeOn(ioScheduler)
-                .map { responseBody ->
-                    val responseBodyStr = responseBody.string()
-                    val baseResponse = gson.fromJson(responseBodyStr, BaseResponse::class.java)
-                    if (baseResponse.stat == Constants.REQUEST_SUCCESS) {
-                        gson.fromJson(responseBodyStr, PhotoResponse::class.java)
-                    } else {
-                        val errorResponse =
-                            gson.fromJson(responseBodyStr, ErrorResponse::class.java)
-                        throw FlickrApiException(errorResponse)
-                    }
-                }
+                .map (::mapRequestBodyToPhotoOrError)
                 .map { photoResponse ->
                     return@map photoResponse.photoSearchWrapper.let { searchResponse ->
                         val hasNextPage = searchResponse.page < searchResponse.pages
@@ -64,16 +55,7 @@ class MainPresenter(
         RxUtils.dispose(photoRequestDisposable)
         photoRequestDisposable = flickrApi.searchPhotos(query = query, page = page)
             .subscribeOn(ioScheduler)
-            .map { responseBody ->
-                val responseBodyStr = responseBody.string()
-                val baseResponse = gson.fromJson(responseBodyStr, BaseResponse::class.java)
-                if (baseResponse.stat == Constants.REQUEST_SUCCESS) {
-                    gson.fromJson(responseBodyStr, PhotoResponse::class.java)
-                } else {
-                    val errorResponse = gson.fromJson(responseBodyStr, ErrorResponse::class.java)
-                    throw FlickrApiException(errorResponse)
-                }
-            }
+            .map (::mapRequestBodyToPhotoOrError)
             .map { photoResponse ->
                 return@map TypeMapper.convertAsList(
                     photoResponse.photoSearchWrapper.photos,
@@ -93,5 +75,16 @@ class MainPresenter(
                 viewState.showError(exception)
             }
 
+    }
+
+    private fun mapRequestBodyToPhotoOrError(responseBody: ResponseBody): PhotoResponse {
+        val responseBodyStr = responseBody.string()
+        val baseResponse = gson.fromJson(responseBodyStr, BaseResponse::class.java)
+        return if (baseResponse.stat == Constants.REQUEST_SUCCESS) {
+            gson.fromJson(responseBodyStr, PhotoResponse::class.java)
+        } else {
+            val errorResponse = gson.fromJson(responseBodyStr, ErrorResponse::class.java)
+            throw FlickrApiException(errorResponse)
+        }
     }
 }

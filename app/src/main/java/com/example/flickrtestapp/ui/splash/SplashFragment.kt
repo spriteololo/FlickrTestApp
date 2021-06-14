@@ -22,6 +22,6 @@ class SplashFragment: BaseInstanceSaverFragment()  {
         super.onViewCreated(view, savedInstanceState)
         Handler(Looper.getMainLooper()).postDelayed({
             findNavController().navigateSafe(R.id.action_SplashFragment_to_MainFragment)
-        }, 1000)
+        }, 1000) //TODO replace with some loading if necessary
     }
 }
